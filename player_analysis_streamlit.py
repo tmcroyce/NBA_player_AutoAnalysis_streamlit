@@ -27,8 +27,10 @@ import plotly.figure_factory as ff
 
 st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
 
+# get current time in pst
+pst = datetime.timezone(datetime.timedelta(hours=-8))
+today = pst
 
-today = datetime.date.today()
 today = today.strftime('%Y-%m-%d')
 st.write('the current date is: ' + today)
 
