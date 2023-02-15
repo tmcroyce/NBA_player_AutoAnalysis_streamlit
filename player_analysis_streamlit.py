@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-import sqlite3
 import seaborn as sns
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from selenium import webdriver
@@ -10,13 +9,9 @@ from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-import requests   
-import shutil      
+from selenium.webdriver.support import expected_conditions as EC   
 import datetime
 from scipy.stats import norm
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 import os
 import winsound
 os.chdir('C:\\Users\\Travis\\OneDrive\\Data Science\\Personal_Projects\\Sports\\player_analysis_streamlit\\')
@@ -24,10 +19,10 @@ import warnings
 warnings.filterwarnings('ignore')
 import streamlit as st
 from selenium.common.exceptions import WebDriverException
-import winsound
 import plotly as py
 import plotly.graph_objs as go
 import plotly.express as px
+import sklearn as sk
 from sklearn.metrics import r2_score
 
 import plotly.figure_factory as ff
