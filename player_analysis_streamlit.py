@@ -33,7 +33,6 @@ pst = datetime.timezone(datetime.timedelta(hours=-8))
 pst = datetime.datetime.now(pst)
 
 today = pst.strftime('%Y-%m-%d')
-st.write('the current date is: ' + today)
 
 # Load Data
 player_numbers = pd.read_csv('data/player/nba_com_info/players_and_photo_links.csv')
