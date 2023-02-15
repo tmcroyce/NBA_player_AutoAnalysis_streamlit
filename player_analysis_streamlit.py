@@ -29,9 +29,8 @@ st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sideb
 
 # get current time in pst
 pst = datetime.timezone(datetime.timedelta(hours=-8))
-today = pst
 
-today = today.strftime('%Y-%m-%d')
+today = pst.strftime('%Y-%m-%d')
 st.write('the current date is: ' + today)
 
 # Load Data
