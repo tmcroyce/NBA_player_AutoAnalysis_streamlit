@@ -32,6 +32,9 @@ from sklearn.metrics import r2_score
 
 import plotly.figure_factory as ff
 
+st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
+
+
 today = datetime.date.today()
 today = today.strftime('%Y-%m-%d')
 
@@ -80,7 +83,10 @@ gbg_df = gbg_df.sort_values(by = 'Date', ascending = False)
 last_date = gbg_df['Date'].iloc[0]
 st.sidebar.write('Last Date of Box Score Data: ' + str(last_date))
 
-st.title('NBA Player Auto-Analytics Tool')
+st.title('NBA Player Analytics Tool')
+
+st.write('This application compares a player\'s performance to the league average and to other players at their position. The data is pulled from a variety of sources, and is updated daily. ')
+
 
 
 st.subheader('Player Size Data')
@@ -90,14 +96,14 @@ st.subheader('Player Size Data')
 teams = gbg_df['trad_team'].unique()
 # sort teams
 teams = np.sort(teams)
-team = st.sidebar.selectbox('Select Team', teams)
+team = st.sidebar.selectbox('Select Team', teams, index = 2)
 
 # select player
 gbg_22 = gbg_df[gbg_df['adv_season'] == 2022]
 players_22 = gbg_22[gbg_22['trad_team'] == team]['trad_player'].unique()
 # sort players
 players_22 = np.sort(players_22)
-player = st.sidebar.selectbox('Select Player', players_22)
+player = st.sidebar.selectbox('Select Player', players_22, index = 12)
 
 player_nba_id = player_numbers[player_numbers['Player'] == player]['nba_id'].iloc[0]
 
