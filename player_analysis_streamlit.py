@@ -30,6 +30,7 @@ st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sideb
 
 today = datetime.date.today()
 today = today.strftime('%Y-%m-%d')
+st.write('the current date is: ' + today)
 
 # Load Data
 player_numbers = pd.read_csv('data/player/nba_com_info/players_and_photo_links.csv')
