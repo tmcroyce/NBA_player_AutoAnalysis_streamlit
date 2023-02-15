@@ -13,7 +13,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import datetime
 from scipy.stats import norm
 import os
-import winsound
 os.chdir('C:\\Users\\Travis\\OneDrive\\Data Science\\Personal_Projects\\Sports\\player_analysis_streamlit\\')
 import warnings
 warnings.filterwarnings('ignore')
