@@ -1132,5 +1132,8 @@ fig.update_layout(xaxis_title = 'Defensive Rating', yaxis_title = 'Frequency')
 col3.plotly_chart(fig, use_container_width = False)
 
 
+# ADD PLAYER CLUSTER AND ELBOW METHOD TO FIND OPTIMAL K
+
+
 
 
