@@ -1133,6 +1133,14 @@ col3.plotly_chart(fig, use_container_width = False)
 
 
 # ADD PLAYER CLUSTER AND ELBOW METHOD TO FIND OPTIMAL K
+numcols = [ col for col in player_gbg_22.columns if player_gbg_22[col].dtype in ['int64', 'float64'] ]
+std_cols = [col for col in player_gbg_22.columns if col not in numcols]
+player_2022_averages  = player_gbg_22[numcols].mean()
+# add other columns back in
+player_2022_averages = pd.concat([player_2022_averages, player_gbg_22[std_cols].iloc[0]], axis = 0)
+# display averages
+st.dataframe(player_2022_averages.to_frame().T.style.format('{:.1f}'))
+
 
 
 
