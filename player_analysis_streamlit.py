@@ -22,7 +22,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 import sklearn as sk
 from sklearn.metrics import r2_score
-
+from sklearn.cluster import KMeans
 import plotly.figure_factory as ff
 
 st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
@@ -1133,13 +1133,88 @@ col3.plotly_chart(fig, use_container_width = False)
 
 
 # ADD PLAYER CLUSTER AND ELBOW METHOD TO FIND OPTIMAL K
-numcols = [ col for col in player_gbg_22.columns if player_gbg_22[col].dtype in ['int64', 'float64'] ]
-std_cols = [col for col in player_gbg_22.columns if col not in numcols]
-player_2022_averages  = player_gbg_22[numcols].mean()
-# add other columns back in
-player_2022_averages = pd.concat([player_2022_averages, player_gbg_22[std_cols].iloc[0]], axis = 0)
-# display averages
-st.dataframe(player_2022_averages.to_frame().T.style.format('{:.1f}'))
+numcols = [ col for col in gbg_22.columns if gbg_22[col].dtype in ['int64', 'float64'] ]
+std_cols = [col for col in gbg_22.columns if col not in numcols]
+# player averages, group by player
+player_avgs_22 = gbg_22.groupby('trad_player').mean()
+# add ppm
+player_avgs_22['ppm'] = player_avgs_22['trad_pts'] / player_avgs_22['trad_min']
+
+# reset index, add player column
+player_avgs_22 = player_avgs_22.reset_index()
+
+
+# ADD POSITIONS
+player_avgs_22['position'] = player_avgs_22['trad_player'].map(primary_positions.set_index('player')['primary_position_bbref'])
+
+# get just players position
+position_avgs_22 = player_avgs_22[player_avgs_22['position'] == position]
+
+
+# add position column to shooting_efficiency
+#shooting_efficiency['position'] = shooting_efficiency['PLAYER'].map(primary_positions.set_index('player')['primary_position_bbref'])
+
+# position_avgs_22 = player_avgs_22[player_avgs_22['trad_pos'] == position]
+
+st.subheader('Player Clustering for Similar Players')
+st.write('''The following chart shows the clusters of players that are similar to ' + player + ' based on their advanced and traditional stats. 
+         \n The clusters are based on the elbow method, which typically shows (in my experience) the optimal number of clusters being four. 
+         \n You can change the number of clusters to see how the clusters change.
+         ''')
+
+# Select columns to use for cluster analysis
+cluster_cols = ['ppm', 'trad_pts', 'trad_3p%', 'trad_ast', 'trad_reb', 'trad_stl', 'adv_efg%', 'adv_ts%', 'adv_usg%', 'adv_offrtg', 'adv_defrtg']
+
+from sklearn.cluster import KMeans
+
+# cluster
+kmeans = KMeans(n_clusters = 5, random_state = 0).fit(position_avgs_22[cluster_cols])
+# add cluster column to player averages
+position_avgs_22['cluster'] = kmeans.labels_
+
+# elbow method
+# create empty list to store wcss
+wcss = []
+# loop through 1 to 10 clusters
+for i in range(1, 20):
+    # fit kmeans
+    kmeans = KMeans(n_clusters = i, random_state = 0).fit(position_avgs_22[cluster_cols])
+    # append wcss to list
+    wcss.append(kmeans.inertia_)
+# plot wcss
+fig = px.line(x = range(1, 20), y = wcss, title = 'Elbow Method')
+fig.update_layout(xaxis_title = 'Number of Clusters', yaxis_title = 'WCSS')
+st.plotly_chart(fig, use_container_width = True)
+
+# what is WCSS? -> Within Cluster Sum of Squares
+# the sum of the squared distance between each member of the cluster and its centroid
+# the smaller the WCSS, the denser the cluster
+
+# Choose cluster number
+cluster_num = st.selectbox('Choose Cluster Number based on chart elbow (typically 4)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20], index = 3)
+
+kmeans_fin = KMeans(n_clusters = cluster_num, random_state = 0).fit(position_avgs_22[cluster_cols])
+# add cluster column to player averages
+position_avgs_22['cluster'] = kmeans_fin.labels_
+# Chart clusters with plotly express in a scatter plot
+fig = px.scatter(position_avgs_22, x = 'ppm', y = 'trad_pts', color = 'cluster', title = 'Player Clusters', hover_data = position_avgs_22.columns)
+fig.update_layout(xaxis_title = 'Points Per Minute', yaxis_title = 'Points')
+st.plotly_chart(fig, use_container_width = True)
+
+# show list of players in same cluster as selected player
+st.write('Players in Same Cluster')
+cluster_mates = position_avgs_22[position_avgs_22['cluster'] == position_avgs_22[position_avgs_22['trad_player'] == player]['cluster'].values[0]]
+# everything from third column on to numeric
+num_colz = cluster_mates.columns[2:]
+cluster_mates[num_colz] = cluster_mates[num_colz].apply(pd.to_numeric, errors = 'coerce')
+# drop unnamed cols
+unnamed = [col for col in cluster_mates.columns if 'Unnamed' in col]
+cluster_mates = cluster_mates.drop(unnamed, axis = 1)
+unnamed2 = [col for col in cluster_mates.columns if 'unnamed' in col]
+cluster_mates = cluster_mates.drop(unnamed2, axis = 1)
+
+st.dataframe(cluster_mates.style.format('{:.1f}', subset = cluster_mates.columns[2:]))
+
 
 
 
