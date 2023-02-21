@@ -1158,6 +1158,8 @@ position_avgs_22 = player_avgs_22[player_avgs_22['position'] == position]
 
 st.subheader('Player Clustering for Similar Players')
 st.write('''The following chart shows the clusters of players that are similar to ' + player + ' based on their advanced and traditional stats. 
+         \n These stats included: Points Per Minute (PPM), Points, 3P%, Assists, Rebounds, Steals, Effective Field Goal Percentage (eFG%), 
+         True Shooting Percentage (TS%), Usage, Offensive Rating, and Defensive Rating.
          \n The clusters are based on the elbow method, which typically shows (in my experience) the optimal number of clusters being four. 
          \n You can change the number of clusters to see how the clusters change.
          ''')
