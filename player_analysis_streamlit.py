@@ -1215,7 +1215,12 @@ cluster_mates = cluster_mates.drop(unnamed, axis = 1)
 unnamed2 = [col for col in cluster_mates.columns if 'unnamed' in col]
 cluster_mates = cluster_mates.drop(unnamed2, axis = 1)
 
-st.dataframe(cluster_mates.style.format('{:.1f}', subset = cluster_mates.columns[2:]))
+# rename columns, anything with trad_ remove trad_
+cluster_mates.columns = [col.replace('trad_', '') for col in cluster_mates.columns]
+# drop adv_season
+cluster_mates = cluster_mates.drop(['adv_season', 'season', 'adv_min', 'position'], axis = 1)
+
+st.table(cluster_mates.style.format('{:.1f}', subset = cluster_mates.columns[1:]))
 
 
 
