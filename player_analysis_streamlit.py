@@ -1093,21 +1093,21 @@ col2 = colz[1]
 col3 = colz[2]
 
 # PPM
-fig = px.bar(last_10, x = 'game date', y = 'ppm', title = 'PPM over Last 10 Games', color = 'ppm', color_continuous_scale = 'RdGy')
+fig = px.bar(last_10, x = 'game date', y = 'ppm', title = 'PPM over Last 10 Games', color = 'ppm', color_continuous_scale = 'RdGr')
 fig.update_layout(xaxis_title = 'Date', yaxis_title = 'PPM')
 # add player average
 fig.add_hline(y = last_10['ppm'].mean(), line_dash = 'dash', line_color = 'red')
 col1.plotly_chart(fig, use_container_width = False)
 
 # Points
-fig = px.bar(last_10, x = 'game date', y = 'pts', title = 'Points over Last 10 Games', color = 'pts', color_continuous_scale = 'RdBu')
+fig = px.bar(last_10, x = 'game date', y = 'pts', title = 'Points over Last 10 Games', color = 'pts', color_continuous_scale = 'RdGr')
 fig.update_layout(xaxis_title = 'Date', yaxis_title = 'Points')
 # add player average
 fig.add_hline(y = last_10['pts'].mean(), line_dash = 'dash', line_color = 'red')
 col2.plotly_chart(fig, use_container_width = False)
 
 # 3P%
-fig = px.bar(last_10, x = 'game date', y = '3p%', title = '3P% over Last 10 Games', color = '3p%', color_continuous_scale = 'RdBu')
+fig = px.bar(last_10, x = 'game date', y = '3p%', title = '3P% over Last 10 Games', color = '3p%', color_continuous_scale = 'RdGr')
 fig.update_layout(xaxis_title = 'Date', yaxis_title = '3P%')
 # add player average
 fig.add_hline(y = last_10['3p%'].mean(), line_dash = 'dash', line_color = 'red')
