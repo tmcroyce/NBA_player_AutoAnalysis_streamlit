@@ -1222,8 +1222,3 @@ cluster_mates = cluster_mates.drop(['adv_season', 'season', 'adv_min', 'position
 
 st.table(cluster_mates.style.format('{:.1f}', subset = cluster_mates.columns[1:]))
 
-
-
-
-
-
