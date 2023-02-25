@@ -1093,7 +1093,7 @@ col2 = colz[1]
 col3 = colz[2]
 
 # PPM
-fig = px.bar(last_10, x = 'game date', y = 'ppm', title = 'PPM over Last 10 Games', color = 'ppm', color_continuous_scale = 'RdBu')
+fig = px.bar(last_10, x = 'game date', y = 'ppm', title = 'PPM over Last 10 Games', color = 'ppm', color_continuous_scale = 'RdGy')
 fig.update_layout(xaxis_title = 'Date', yaxis_title = 'PPM')
 # add player average
 fig.add_hline(y = last_10['ppm'].mean(), line_dash = 'dash', line_color = 'red')
